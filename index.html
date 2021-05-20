@@ -91,10 +91,13 @@
                     <div class="form-group">
                         <label for="attachFile">Attach File:</label>
                         <input type="file" class="form-control-file" id="attachFile">
-                        <button onclick="upload()">Upload</button>
+                        <button id="upload" type="button" class="btn btn-outline-primary" onclick="upload()" disabled>Upload</button>
+                        <small id="namevalid" class="form-text text-muted invalid-feedback">
+                            Selected file must be less then 5MB size and of pdf or doc or docx format! 
+                        </small>
                     </div>
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary" id="button">Submit</button>
+                        <button type="button" class="btn btn-success" id="button">Submit</button>
                     </div>
                 </div>
             </div>

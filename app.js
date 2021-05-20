@@ -10,7 +10,9 @@ const role = document.getElementById('role'); // toggler
 const zone = document.getElementById('zone'); // toggler
 const branch = document.getElementById('branch'); // toggler
 const attachFile = document.getElementById('attachFile'); // doc
+const uploadBtn = document.getElementById('upload')
 const button = document.getElementById('button'); // button
+
 
 let fullName,
     emailID,
@@ -32,8 +34,10 @@ let IsFullNameValid = false,
     IsDepSelected = false, 
     IsRoleSelected = false,
     IsZoneSelected = false,
-    IsBranchSelected = false;
-/////////////////////// fullname email mobileno ////////////////////////
+    IsBranchSelected = false,
+    IsFileAttached = false;
+
+////////////////////////////////// fullName email mobileno //////////////////////////////////
 nodeFullName.addEventListener('blur', () => {
     const regex = /^[a-z]([-']?[a-z]+)( [a-z]([-']?[a-z]+))+$/;
     const str = nodeFullName.value;
@@ -130,7 +134,7 @@ relaventExperience.addEventListener('change', (e) => {
     IsRelaventExpSelected = true;
 });
 
-////////////////// Departments and Roles ////////////////////////
+/////////////////////////////////// Departments and Roles /////////////////////////////////////
 
 let departmentAndRoleData;
 const loadDepAndRoleData = async () => {
@@ -178,7 +182,7 @@ function setRoleEl(selectedDep) {
     });
 }
 
-////////////// zones and branches ///////////////////
+///////////////////////////// zones and branches /////////////////////////////////
 
 let zoneData;
 const loadZonesData = async () => {
@@ -226,7 +230,33 @@ zone.addEventListener('change', (e) => {
     loadBranchesData(selectedZone);
 });
 
-const resume = document.getElementById('attachFile');
+////////////////////////////////////// file validation ///////////////////////////////////
+let resume
+attachFile.addEventListener('change', function () {
+    const size = (this.files[0].size / 1024 / 1024).toFixed(2);
+    resume = $(this).val();
+    var extension = resume.split('.').pop();
+
+    if (extension == "pdf" || extension == "docx" || extension == "doc"){
+        if(size < 5){
+            console.log('Attached correct file!')
+            attachFile.classList.remove('is-invalid')
+            uploadBtn.disabled = false
+            IsFileAttached = true;
+        } else{
+            alert("File must be less then 5 MB");
+            uploadBtn.disabled = true
+            attachFile.classList.add('is-invalid')
+            IsFileAttached = false;
+        }
+    } else{
+        alert('File format must be pdf or docx or doc')
+        uploadBtn.disabled = true
+        attachFile.classList.add('is-invalid')
+        IsFileAttached = false;
+    }
+});
+
 const upload = (e) => {
     // e.preventDefault()
     const form = new FormData();
@@ -309,6 +339,9 @@ button.addEventListener('click', (e) => {
     } else if(!IsBranchSelected){
         $("#branch").focus();
         alert('select Branch!')
+    } else if(!IsFileAttached){
+        $("#attachFile").focus()
+        alert('Attach File!')
     } else{
         alert('Data submitted successfully!')
         formSubmit();
