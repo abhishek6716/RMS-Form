@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- Style-CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
+
+    <!-- Bootstrap Popper and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <section id="b1">
+        <div class="container-fluid">
+            <div class="f2">
+                <div>
+                    <div class="form-group">
+                        <label for="fullName">Full Name:</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Enter Name" oninput="">
+                        <small id="namevalid" class="form-text text-muted invalid-feedback">
+                            Enter valid Full Name!
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="text" class="form-control" id="email" placeholder="Enter Email" oninput="">
+                        <small id="namevalid" class="form-text text-muted invalid-feedback">
+                            Enter valid Email!
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobileNo">Mobile No:</label>
+                        <input type="text" class="form-control" id="mobileNo" placeholder="Enter Mobile No" oninput="">
+                        <small id="namevalid" class="form-text text-muted invalid-feedback">
+                            Enter valid Mobile Number!
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="overallExperience">Overall Experience:</label>
+                        <select class="form-control" id="overallExperience">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="relaventExperience">Relavent Experience:</label>
+                        <select class="form-control" id="relaventExperience">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <select class="form-control" id="department">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <select class="form-control" id="role" disabled>
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="zone">Zone:</label>
+                        <select class="form-control" id="zone">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="branch">Branch:</label>
+                        <select class="form-control" id="branch" disabled>
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="attachFile">Attach File:</label>
+                        <input type="file" class="form-control-file" id="attachFile">
+                        <button onclick="upload()">Upload</button>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="button">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="requests.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
