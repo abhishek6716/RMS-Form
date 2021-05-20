@@ -1,18 +1,23 @@
 console.log('app is running!');
 
-const nodeFullName = document.getElementById('fullName'); // input box
-const nodeEmail = document.getElementById('email'); // input box
-const nodeMobileNo = document.getElementById('mobileNo'); // input box
-const overallExperience = document.getElementById('overallExperience'); // toggler
-const relaventExperience = document.getElementById('relaventExperience'); // toggler
-const department = document.getElementById('department'); // toggler
-const role = document.getElementById('role'); // toggler
-const zone = document.getElementById('zone'); // toggler
-const branch = document.getElementById('branch'); // toggler
-const attachFile = document.getElementById('attachFile'); // doc
-const uploadBtn = document.getElementById('upload')
-const button = document.getElementById('button'); // button
 
+////////////////////////////////////// SELECTORS USED //////////////////////////////////////
+
+const nodeFullName = document.getElementById('fullName');                             // input box
+const nodeEmail = document.getElementById('email');                                   // input box
+const nodeMobileNo = document.getElementById('mobileNo');                             // input box
+const overallExperience = document.getElementById('overallExperience');               // toggler
+const relaventExperience = document.getElementById('relaventExperience');             // toggler
+const department = document.getElementById('department');                             // toggler
+const role = document.getElementById('role');                                         // toggler
+const zone = document.getElementById('zone');                                         // toggler
+const branch = document.getElementById('branch');                                     // toggler
+const attachFile = document.getElementById('attachFile');                             // file
+const uploadBtn = document.getElementById('upload')                                   // button
+const button = document.getElementById('button');                                     // button
+
+
+//////////////////////////////////// VARIABLES USED ///////////////////////////////////////////
 
 let fullName,
     emailID,
@@ -37,7 +42,8 @@ let IsFullNameValid = false,
     IsBranchSelected = false,
     IsFileAttached = false;
 
-////////////////////////////////// fullName email mobileno //////////////////////////////////
+////////////////////////////////////// FULLNAME VALIDATION ///////////////////////////////////////
+
 nodeFullName.addEventListener('blur', () => {
     const regex = /^[a-z]([-']?[a-z]+)( [a-z]([-']?[a-z]+))+$/;
     const str = nodeFullName.value;
@@ -50,6 +56,8 @@ nodeFullName.addEventListener('blur', () => {
         IsFullNameValid = false
     }
 });
+
+/////////////////////////////////////// EMAIL VALIDATION ////////////////////////////////////////
 
 nodeEmail.addEventListener('blur', () => {
     const regex =
@@ -65,6 +73,9 @@ nodeEmail.addEventListener('blur', () => {
     }
 });
 
+
+//////////////////////////////// MOBILE NUMBER VALIDATION //////////////////////////////
+
 nodeMobileNo.addEventListener('blur', () => {
     const regex = /^([0-9]{10}$)/;
     const str = nodeMobileNo.value;
@@ -78,6 +89,9 @@ nodeMobileNo.addEventListener('blur', () => {
     }
 });
 
+
+//////////////////////////////// CLEARING ROLES AND BRANCHES ////////////////////////////////
+
 const clearRoles = () => {
     role.innerHTML = '<option>Select</option>';
     IsRoleSelected = false;
@@ -88,7 +102,10 @@ const clearBranches = () => {
     IsBranchSelected = false;
 };
 
-// OverallExperience and RelevantExperience
+
+////////////////////////////// OVERALL AND RELAVENT EXPERIENCE SETUP //////////////////////////
+
+
 let overallExpData, relevantExpData;
 const loadOverallExpData = async () => {
     const body = await getExperience('OVERALL');
@@ -134,7 +151,9 @@ relaventExperience.addEventListener('change', (e) => {
     IsRelaventExpSelected = true;
 });
 
-/////////////////////////////////// Departments and Roles /////////////////////////////////////
+
+/////////////////////////////////// DEPARTMENT AND ROLE SETUP /////////////////////////////////////
+
 
 let departmentAndRoleData;
 const loadDepAndRoleData = async () => {
@@ -182,7 +201,9 @@ function setRoleEl(selectedDep) {
     });
 }
 
-///////////////////////////// zones and branches /////////////////////////////////
+
+///////////////////////////// ZONES AND BRANCHES SETUP /////////////////////////////////
+
 
 let zoneData;
 const loadZonesData = async () => {
@@ -230,12 +251,14 @@ zone.addEventListener('change', (e) => {
     loadBranchesData(selectedZone);
 });
 
-////////////////////////////////////// file validation ///////////////////////////////////
-let resume
+
+////////////////////////////////////// FILE VALIDATION  ////////////////////////////////////
+
+let fileName
 attachFile.addEventListener('change', function () {
     const size = (this.files[0].size / 1024 / 1024).toFixed(2);
-    resume = $(this).val();
-    var extension = resume.split('.').pop();
+    fileName = $(this).val();
+    var extension = fileName.split('.').pop();
 
     if (extension == "pdf" || extension == "docx" || extension == "doc"){
         if(size < 5){
@@ -257,6 +280,10 @@ attachFile.addEventListener('change', function () {
     }
 });
 
+////////////////////////////////// FILE UPLOADING REQUEST ///////////////////////////////////////
+
+
+const resume = document.getElementById('attachFile');
 const upload = (e) => {
     // e.preventDefault()
     const form = new FormData();
@@ -279,6 +306,9 @@ const upload = (e) => {
         resumeNonce = data.nonce;
     });
 };
+
+
+///////////////////////////////// FORM SUBMITTING REQUEST ///////////////////////////////////
 
 function formSubmit() {
     const obj = {
@@ -309,6 +339,9 @@ function formSubmit() {
     });
     console.log(obj);
 }
+
+
+/////////////////////////// FINAL FORM SUBMISSION /////////////////////////////////
 
 button.addEventListener('click', (e) => {
     e.preventDefault()
@@ -348,6 +381,7 @@ button.addEventListener('click', (e) => {
     }
 });
 
+////////////////////////////////// END OF APPLICATION ;-) ////////////////////////////////
 
 // the coding train
 
