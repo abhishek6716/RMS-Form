@@ -1,6 +1,53 @@
 console.log('app is running!');
 
 
+let url = 'https://api-hfc.techchefz.com/icicihfc-micro-service'
+
+const getExperience = async (experienceType) => {
+    experienceType.toUpperCase()
+    const response = await fetch(`${url}/rms/get/experience?experienceType=${experienceType}`)
+
+    if (response.status === 200) {
+        const data = await response.json()
+        return data
+    } else {
+        throw new Error('Unable to get experience')
+    }
+}
+
+const getDepAndRole = async () => {
+    const response = await fetch(`${url}/rms/get/departments/and/roles`)
+
+    if (response.status === 200) {
+        const data = await response.json()
+        return data
+    } else {
+        throw new Error('Unable to get DepAndRole')
+    }
+}
+
+const getZones = async () => {
+    const response = await fetch(`${url}/rms/get/job/location/zones`)
+
+    if (response.status === 200) {
+        const data = await response.json()
+        return data
+    } else {
+        throw new Error('Unable to get zones')
+    }
+}
+
+const getBranches = async (selectedZone) => {
+    const response = await fetch(`${url}/rms/get/job/location/branches/by/zone?zone=${selectedZone}`)
+
+    if (response.status === 200) {
+        const data = await response.json()
+        return data
+    } else {
+        throw new Error('Unable to get branches')
+    }
+}
+
 ////////////////////////////////////// SELECTORS USED //////////////////////////////////////
 
 const nodeFullName = document.getElementById('fullName');                             // input box
@@ -22,10 +69,10 @@ const button = document.getElementById('button');                               
 let fullName,
     emailID,
     mobileNo,
-    experienceOverallID,
-    experienceRelavantID,
-    roleID,
-    jobLocationID,
+    experienceOverallID = 'OverallExpNotSelected',
+    experienceRelavantID = 'RelaventExpNotSelected',
+    roleID = 'RoleNotSelected',
+    jobLocationID = 'BranchNotSelected',
     resumeID,
     resumeName,
     resumeNonce;
@@ -36,7 +83,7 @@ let IsFullNameValid = false,
     IsMobileNoValid = false, 
     IsOverallExpSelected = false, 
     IsRelaventExpSelected = false,
-    IsDepSelected = false, 
+    IsDepSelected = 'DepNotSelected', 
     IsRoleSelected = false,
     IsZoneSelected = false,
     IsBranchSelected = false,
@@ -61,7 +108,7 @@ nodeFullName.addEventListener('blur', () => {
 
 nodeEmail.addEventListener('blur', () => {
     const regex =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const str = nodeEmail.value;
     if (regex.test(str)) {
         emailID = str;
@@ -93,12 +140,12 @@ nodeMobileNo.addEventListener('blur', () => {
 //////////////////////////////// CLEARING ROLES AND BRANCHES ////////////////////////////////
 
 const clearRoles = () => {
-    role.innerHTML = '<option>Select</option>';
+    role.innerHTML = '<option value="RoleNotSelected">Select</option>';
     IsRoleSelected = false;
 };
 
 const clearBranches = () => {
-    branch.innerHTML = '<option>Select</option>';
+    branch.innerHTML = '<option value="BranchNotSelected">Select</option>';
     IsBranchSelected = false;
 };
 
@@ -177,7 +224,7 @@ function setDepEl() {
 department.addEventListener('change', (e) => {
     clearRoles();
     const id = e.target.value;
-    IsDepSelected = true;
+    IsDepSelected = 'DepSelected';
     setRoleEl(id);
 });
 
@@ -259,6 +306,7 @@ attachFile.addEventListener('change', function () {
     const size = (this.files[0].size / 1024 / 1024).toFixed(2);
     fileName = $(this).val();
     var extension = fileName.split('.').pop();
+    uploadBtn.disabled = true
 
     if (extension == "pdf" || extension == "docx" || extension == "doc"){
         if(size < 5){
@@ -354,16 +402,16 @@ button.addEventListener('click', (e) => {
     } else if(!IsMobileNoValid){
         $("#mobileNo").focus();
         alert('Enter valid Mobile Number!')
-    } else if(!IsOverallExpSelected){
+    } else if (!IsOverallExpSelected || experienceOverallID == 'OverallExpNotSelected'){
         $("#overallExperience").focus();
         alert('Select Overall Experience!')
-    } else if(!IsRelaventExpSelected){
+    } else if (!IsRelaventExpSelected || experienceRelavantID == 'RelaventExpNotSelected'){
         $("#relaventExperience").focus();
         alert('Select Relavent Experience!')
-    } else if(!IsDepSelected){
+    } else if (!IsDepSelected || IsDepSelected == 'DepNotSelected'){
         $("#department").focus();
         alert('Select Department!')
-    } else if(!IsRoleSelected){
+    } else if (!IsRoleSelected || roleID == 'RoleNotSelected'){
         $("#role").focus();
         alert('Select Role!')
     } else if(!IsZoneSelected){
@@ -382,7 +430,5 @@ button.addEventListener('click', (e) => {
 });
 
 ////////////////////////////////// END OF APPLICATION ;-) ////////////////////////////////
-
-// the coding train
 
 

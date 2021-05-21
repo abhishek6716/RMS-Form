@@ -44,3 +44,6 @@ const getBranches = async (selectedZone) => {
         throw new Error('Unable to get branches')
     }
 }
+
+// http://49.205.181.100:4520/crx/de/index.jsp
+// http://49.205.181.100/rms
