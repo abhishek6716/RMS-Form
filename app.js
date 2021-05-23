@@ -1,5 +1,6 @@
-console.log('app is running!');
+console.log('App is running!')
 
+//// Requests ////
 
 let url = 'https://api-hfc.techchefz.com/icicihfc-micro-service'
 
@@ -63,36 +64,30 @@ const attachFile = document.getElementById('attachFile');                       
 const uploadBtn = document.getElementById('upload')                                   // button
 const button = document.getElementById('button');                                     // button
 
-
 //////////////////////////////////// VARIABLES USED ///////////////////////////////////////////
 
 let fullName,
     emailID,
     mobileNo,
-    experienceOverallID = 'OverallExpNotSelected',
-    experienceRelavantID = 'RelaventExpNotSelected',
-    roleID = 'RoleNotSelected',
-    jobLocationID = 'BranchNotSelected',
-    resumeID,
+    experienceOverallID = 'selectExpOveID',
+    experienceRelavantID = 'selectExpRelID',
+    departmentID = 'selectDep',
+    roleID = 'selectRole',
+    zoneID = 'selectZone',
+    jobLocationID = 'selectBranch',
+    resumeID = 'notUploaded',
     resumeName,
     resumeNonce;
 
-
-let IsFullNameValid = false, 
-    IsEmailValid = false, 
-    IsMobileNoValid = false, 
-    IsOverallExpSelected = false, 
-    IsRelaventExpSelected = false,
-    IsDepSelected = 'DepNotSelected', 
-    IsRoleSelected = false,
-    IsZoneSelected = false,
-    IsBranchSelected = false,
+let IsFullNameValid = false,
+    IsEmailValid = false,
+    IsMobileNoValid = false,
     IsFileAttached = false;
 
 ////////////////////////////////////// FULLNAME VALIDATION ///////////////////////////////////////
 
 nodeFullName.addEventListener('blur', () => {
-    const regex = /^[a-z]([-']?[a-z]+)( [a-z]([-']?[a-z]+))+$/;
+    const regex = /^[a-zA-Z]([-']?[a-zA-Z]+)( [a-zA-Z]([-']?[a-zA-Z]+))+$/;
     const str = nodeFullName.value;
     if (regex.test(str)) {
         fullName = str;
@@ -108,7 +103,7 @@ nodeFullName.addEventListener('blur', () => {
 
 nodeEmail.addEventListener('blur', () => {
     const regex =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const str = nodeEmail.value;
     if (regex.test(str)) {
         emailID = str;
@@ -124,7 +119,7 @@ nodeEmail.addEventListener('blur', () => {
 //////////////////////////////// MOBILE NUMBER VALIDATION //////////////////////////////
 
 nodeMobileNo.addEventListener('blur', () => {
-    const regex = /^([0-9]{10}$)/;
+    const regex = /^[6-9]\d{9}$/;
     const str = nodeMobileNo.value;
     if (regex.test(str)) {
         mobileNo = str;
@@ -136,20 +131,6 @@ nodeMobileNo.addEventListener('blur', () => {
     }
 });
 
-
-//////////////////////////////// CLEARING ROLES AND BRANCHES ////////////////////////////////
-
-const clearRoles = () => {
-    role.innerHTML = '<option value="RoleNotSelected">Select</option>';
-    IsRoleSelected = false;
-};
-
-const clearBranches = () => {
-    branch.innerHTML = '<option value="BranchNotSelected">Select</option>';
-    IsBranchSelected = false;
-};
-
-
 ////////////////////////////// OVERALL AND RELAVENT EXPERIENCE SETUP //////////////////////////
 
 
@@ -157,7 +138,6 @@ let overallExpData, relevantExpData;
 const loadOverallExpData = async () => {
     const body = await getExperience('OVERALL');
     overallExpData = body.data;
-    // console.log(body.data)
     setOverallEl();
 };
 loadOverallExpData();
@@ -165,7 +145,6 @@ loadOverallExpData();
 const loadRelevantExpData = async () => {
     const body = await getExperience('RELEVANT');
     relevantExpData = body.data;
-    // console.log(body.data)
     setReleventEl();
 };
 loadRelevantExpData();
@@ -190,16 +169,18 @@ function setReleventEl() {
 
 overallExperience.addEventListener('change', (e) => {
     experienceOverallID = e.target.value;
-    IsOverallExpSelected = true;
 });
 
 relaventExperience.addEventListener('change', (e) => {
     experienceRelavantID = e.target.value;
-    IsRelaventExpSelected = true;
 });
 
-
 /////////////////////////////////// DEPARTMENT AND ROLE SETUP /////////////////////////////////////
+
+const clearRoles = () => {
+    role.innerHTML = '<option value="selectRole">Select</option>';
+    roleID = 'selectRole'
+};
 
 
 let departmentAndRoleData;
@@ -224,8 +205,12 @@ function setDepEl() {
 department.addEventListener('change', (e) => {
     clearRoles();
     const id = e.target.value;
-    IsDepSelected = 'DepSelected';
-    setRoleEl(id);
+    departmentID = id;
+    if (departmentID != 'selectDep'){
+        setRoleEl(id);
+    } else{
+        role.disabled = true;
+    }
 });
 
 function setRoleEl(selectedDep) {
@@ -244,13 +229,15 @@ function setRoleEl(selectedDep) {
     role.disabled = false;
     role.addEventListener('change', (e) => {
         roleID = e.target.value;
-        IsRoleSelected = true
     });
 }
 
-
 ///////////////////////////// ZONES AND BRANCHES SETUP /////////////////////////////////
 
+const clearBranches = () => {
+    branch.innerHTML = '<option value="selectBranch">Select</option>';
+    jobLocationID = 'selectBranch'
+};
 
 let zoneData;
 const loadZonesData = async () => {
@@ -287,15 +274,18 @@ function setBranchesEl() {
     branch.disabled = false;
     branch.addEventListener('change', (e) => {
         jobLocationID = e.target.value;
-        IsBranchSelected = true;
     });
 }
 
 zone.addEventListener('change', (e) => {
     clearBranches();
     let selectedZone = e.target.value;
-    IsZoneSelected = true
-    loadBranchesData(selectedZone);
+    zoneID = selectedZone;
+    if(zoneID != 'selectZone'){
+        loadBranchesData(selectedZone);
+    } else{
+        branch.disabled = true;
+    }
 });
 
 
@@ -308,19 +298,19 @@ attachFile.addEventListener('change', function () {
     var extension = fileName.split('.').pop();
     uploadBtn.disabled = true
 
-    if (extension == "pdf" || extension == "docx" || extension == "doc"){
-        if(size < 5){
+    if (extension == "pdf" || extension == "docx" || extension == "doc") {
+        if (size < 5) {
             console.log('Attached correct file!')
             attachFile.classList.remove('is-invalid')
             uploadBtn.disabled = false
             IsFileAttached = true;
-        } else{
+        } else {
             alert("File must be less then 5 MB");
             uploadBtn.disabled = true
             attachFile.classList.add('is-invalid')
             IsFileAttached = false;
         }
-    } else{
+    } else {
         alert('File format must be pdf or docx or doc')
         uploadBtn.disabled = true
         attachFile.classList.add('is-invalid')
@@ -388,47 +378,44 @@ function formSubmit() {
     console.log(obj);
 }
 
-
 /////////////////////////// FINAL FORM SUBMISSION /////////////////////////////////
 
 button.addEventListener('click', (e) => {
     e.preventDefault()
-    if(!IsFullNameValid){
+    if (!IsFullNameValid) {
         $("#fullName").focus();
         alert('Enter valid Full Name!')
-    } else if(!IsEmailValid){
+    } else if (!IsEmailValid) {
         $("#email").focus();
         alert('Enter valid Email!')
-    } else if(!IsMobileNoValid){
+    } else if (!IsMobileNoValid) {
         $("#mobileNo").focus();
         alert('Enter valid Mobile Number!')
-    } else if (!IsOverallExpSelected || experienceOverallID == 'OverallExpNotSelected'){
+    } else if (experienceOverallID == 'selectExpOveID') {
         $("#overallExperience").focus();
         alert('Select Overall Experience!')
-    } else if (!IsRelaventExpSelected || experienceRelavantID == 'RelaventExpNotSelected'){
+    } else if (experienceRelavantID == 'selectExpRelID') {
         $("#relaventExperience").focus();
         alert('Select Relavent Experience!')
-    } else if (!IsDepSelected || IsDepSelected == 'DepNotSelected'){
+    } else if (departmentID == 'selectDep') {
         $("#department").focus();
         alert('Select Department!')
-    } else if (!IsRoleSelected || roleID == 'RoleNotSelected'){
+    } else if (roleID == 'selectRole'){
         $("#role").focus();
         alert('Select Role!')
-    } else if(!IsZoneSelected){
+    } else if(zoneID == 'selectZone'){
         $("#zone").focus();
-        alert('Select Zone')
-    } else if(!IsBranchSelected){
+        alert('Select Zone!')
+    } else if(jobLocationID == 'selectBranch'){
         $("#branch").focus();
-        alert('select Branch!')
-    } else if(!IsFileAttached){
+        alert('Select Branch!')
+    } else if (!IsFileAttached) {
         $("#attachFile").focus()
         alert('Attach File!')
-    } else{
+    } else if(resumeID == 'notUploaded'){
+        alert('Upload file!')
+    } else {
         alert('Data submitted successfully!')
         formSubmit();
     }
 });
-
-////////////////////////////////// END OF APPLICATION ;-) ////////////////////////////////
-
-
